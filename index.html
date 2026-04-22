@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dauylpaz Management | Инжиниринговая Компания</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=IBM+Plex+Mono&family=Outfit:wght@300;400;600&family=Plus+Jakarta+Sans:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            moss: '#2E4036',
+                            clay: '#CC5833',
+                            cream: '#F2F0E9',
+                            charcoal: '#1A1A1A',
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Outfit"', 'sans-serif'],
+                        drama: ['"Cormorant Garamond"', 'serif'],
+                        mono: ['"IBM Plex Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+    
+    <style>
+        body { 
+            background-color: #F2F0E9; 
+            color: #1A1A1A; 
+            overflow-x: hidden;
+        }
+        ::selection { background: #CC5833; color: #F2F0E9; }
+        
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999;
+            opacity: 0.04; mix-blend-mode: overlay;
+        }
+        
+        .glass-nav {
+            background: rgba(242, 240, 233, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(46, 64, 54, 0.1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(46,64,54,0.15);
+        }
+        
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .magnetic-btn:hover { transform: scale(1.03); }
+    </style>
+</head>
+<body class="font-body antialiased selection:bg-brand-clay selection:text-brand-cream">
+
+    <!-- Subtle Digital Noise Texture -->
+    <svg class="noise">
+        <filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+    </svg>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-8 py-4 rounded-full flex items-center gap-10 text-brand-moss glass-nav transition-all duration-500 shadow-lg">
+        <div class="flex items-center">
+            <img src="./images/logo.png" alt="Dauylpaz Logo" class="h-10 w-auto object-contain">
+        </div>
+        <div class="hidden md:flex items-center gap-8 font-body text-sm font-semibold tracking-wide">
+            <a href="#about" class="hover:text-brand-clay transition-colors">О компании</a>
+            <a href="#services" class="hover:text-brand-clay transition-colors">Услуги</a>
+            <a href="#projects" class="hover:text-brand-clay transition-colors">Проекты</a>
+            <a href="#history" class="hover:text-brand-clay transition-colors">История</a>
+            <a href="#contact" class="hover:text-brand-clay transition-colors">Контакты</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="relative h-[100dvh] w-full flex flex-col justify-end pb-24 px-6 lg:px-24 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <!-- ЗДЕСЬ ДОЛЖНА БЫТЬ ВАША ПЕРВАЯ ФОТОГРАФИЯ (НАПРИМЕР: hero-bg.jpg) -->
+            <img src="./images/hero-bg.jpg" alt="Engineering Facility" class="w-full h-full object-cover object-center scale-105" id="hero-bg"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-[rgba(26,26,26,0.6)] to-transparent"></div>
+        </div>
+
+        <div class="absolute top-12 left-4 lg:left-12 z-20 hero-elem">
+            <img src="./images/logo.png" alt="Dauylpaz Logo" class="h-40 md:h-56 w-auto object-contain brightness-0 invert">
+        </div>
+        
+        <div class="relative z-10 max-w-5xl text-brand-cream" id="hero-content">
+            <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-8 hero-elem uppercase leading-tight">
+                Dauylpaz<br>Management
+            </h1>
+            <p class="font-body text-xl max-w-3xl text-brand-cream/80 hero-elem mb-10 leading-relaxed font-light">
+                Инжиниринговая компания, предоставляющая весь спектр услуг — от концептуального проектирования до полного ввода в эксплуатацию инфраструктурных и нефтегазовых объектов различной сложности.
+            </p>
+        </div>
+    </main>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 lg:px-24 bg-brand-cream text-brand-charcoal">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
+            <div class="w-full lg:w-1/2">
+                <p class="font-mono text-sm uppercase tracking-widest text-brand-clay mb-6">Стандарт Качества</p>
+                <h2 class="font-heading text-4xl lg:text-6xl font-bold mb-10 leading-tight">Мы фокусируемся на Системах</h2>
+                <div class="space-y-6 font-body text-lg text-brand-charcoal/70 leading-relaxed">
+                    <p>Более 11 специалистов с высочайшим уровнем инженерного опыта.</p>
+                    <p>Наша техническая документация строго разрабатывается по международным стандартам, ГОСТ и СНиП РК, обеспечивая абсолютную безопасность и надежность на каждом этапе строительства.</p>
+                </div>
+            </div>
+            <div class="w-full lg:w-1/2 flex flex-col gap-8">
+                <div class="rounded-[2rem] overflow-hidden shadow-xl">
+                    <img src="./images/system1.jpg" alt="Система 1" class="w-full h-auto object-cover">
+                </div>
+                <div class="rounded-[2rem] overflow-hidden shadow-xl">
+                    <img src="./images/system2.jpg" alt="Система 2" class="w-full h-auto object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="relative py-32 px-6 lg:px-24 text-brand-cream overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="./images/services-bg.jpg" alt="Services Background" class="w-full h-full object-cover object-center">
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-charcoal/70 via-brand-charcoal/40 to-transparent"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="mb-20">
+                <p class="font-mono text-sm uppercase tracking-widest text-brand-clay mb-4">Направления</p>
+                <h2 class="font-heading text-5xl lg:text-7xl font-bold drop-shadow-lg">Услуги & Экспертиза</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Service 1: Проектирование -->
+                <div class="bg-brand-charcoal/60 backdrop-blur-md p-10 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-all duration-500">
+                    <div class="font-mono text-xs uppercase tracking-widest text-brand-clay mb-4 flex items-center gap-2">
+                        <span class="w-8 h-[1px] bg-brand-clay"></span> Лицензия II-категории
+                    </div>
+                    <h3 class="font-heading text-3xl font-bold mb-8 text-white uppercase tracking-tight">Проектирование</h3>
+                    <ul class="space-y-4 font-body text-brand-cream/80 text-base leading-relaxed">
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Инженерные сети и системы</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Технологическое проектирование зданий и сооружений</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Технологическое проектирование объектов производственного назначения</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Строительное проектирование и конструирование</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Градостроительное и архитектурное проектирование</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2: Нефтегазохимия -->
+                <div class="bg-brand-charcoal/60 backdrop-blur-md p-10 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-all duration-500">
+                    <div class="font-mono text-xs uppercase tracking-widest text-brand-clay mb-4">Энергетический сектор</div>
+                    <h3 class="font-heading text-3xl font-bold mb-8 text-white uppercase tracking-tight">Нефтегазохимические производства</h3>
+                    <ul class="space-y-4 font-body text-brand-cream/80 text-base leading-relaxed">
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Проектирование добычи нефти, газа, нефтегазоконденсата</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Составление проектов и технологических регламентов на месторождений</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Переработка нефтесодержащих отходов</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Продукты первичной и глубокой переработки нефти</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3: Изыскания -->
+                <div class="bg-brand-charcoal/60 backdrop-blur-md p-10 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-all duration-500">
+                    <div class="font-mono text-xs uppercase tracking-widest text-brand-clay mb-4 flex items-center gap-2">
+                        <span class="w-8 h-[1px] bg-brand-clay"></span> Точность и Анализ
+                    </div>
+                    <h3 class="font-heading text-3xl font-bold mb-8 text-white uppercase tracking-tight">Изыскательская деятельность</h3>
+                    <ul class="space-y-4 font-body text-brand-cream/80 text-base leading-relaxed">
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Топографические работы для проектирования и строительства</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Геодезические работы, связанные с переносом в натуру с привязкой инженерно-геологических выработок</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Построение и закладка геодезических центров</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Создание планово-высотных съемочных сетей</li>
+                    </ul>
+                </div>
+
+                <!-- Service 4: СМР -->
+                <div class="bg-brand-charcoal/60 backdrop-blur-md p-10 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-all duration-500">
+                    <div class="font-mono text-xs uppercase tracking-widest text-brand-clay mb-4">Реализация</div>
+                    <h3 class="font-heading text-3xl font-bold mb-8 text-white uppercase tracking-tight">Строительно-монтажные работы</h3>
+                    <ul class="space-y-4 font-body text-brand-cream/80 text-base leading-relaxed">
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Монтаж технологического оборудования</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Отделка и защита конструкции и оборудования</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Устройства инженерных систем и сетей</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-clay mt-1 select-none">✦</span> Специальные строительные и монтажные работы</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-32 px-6 lg:px-24 bg-[#111] text-brand-cream relative overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-10">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/></pattern></defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+        </div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="mb-20 flex flex-col items-center text-center">
+                <p class="font-mono text-sm uppercase tracking-widest text-brand-clay mb-4">Наш опыт</p>
+                <h2 class="font-heading text-5xl lg:text-7xl font-bold mb-6 text-white uppercase tracking-tighter">Реализованные Проекты</h2>
+                <p class="font-body text-xl max-w-2xl text-brand-cream/60">Масштабные инфраструктурные и промышленные решения для ведущих мировых и локальных операторов.</p>
+            </div>
+            
+            <div id="projects-carousel" class="flex gap-8 overflow-hidden cursor-grab active:cursor-grabbing py-10">
+                <div id="carousel-track" class="flex gap-8 w-max">
+                    <!-- Project 1 -->
+                    <div class="project-card bg-white/5 p-8 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-colors duration-300 w-[350px] shrink-0 flex flex-col justify-between">
+                        <div>
+                            <div class="h-12 mb-6 flex items-start">
+                                <img src="./images/bonatti.png" alt="Bonatti Logo" class="h-full w-auto object-contain brightness-0 invert opacity-40">
+                            </div>
+                            <h3 class="font-heading text-2xl font-bold mb-4 text-white uppercase tracking-tight">Bonatti</h3>
+                            <div class="space-y-4 font-body text-brand-cream/70 text-sm leading-relaxed">
+                                <p>Корректировка проектных документаций по производственной базе в мкр. Жулдыз.</p>
+                                <p>Разработка РП с согласованием раздела ООС на временные базы вдоль трубопроводов о. Кашаган — УКПНиГ.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card bg-white/5 p-8 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-colors duration-300 w-[350px] shrink-0 flex flex-col justify-between">
+                        <div>
+                            <div class="h-12 mb-6 flex items-start">
+                                <img src="./images/maten.png" alt="Maten Logo" class="h-full w-auto object-contain brightness-0 invert opacity-40">
+                            </div>
+                            <h3 class="font-heading text-2xl font-bold mb-4 text-white uppercase tracking-tight">Maten Petroleum</h3>
+                            <div class="space-y-4 font-body text-brand-cream/70 text-sm leading-relaxed">
+                                <p>Модернизация системы подготовки пластовой воды на м/р «Бесболек» в Макатском районе.</p>
+                                <p>Разработка технологической схемы сбора/подготовки нефти на м/р Матин, Кара-Арна и Восточный Арна.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card bg-white/5 p-8 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-colors duration-300 w-[350px] shrink-0 flex flex-col justify-between">
+                        <div>
+                            <div class="h-12 mb-6 flex items-start">
+                                <img src="./images/isker.png" alt="Isker Logo" class="h-full w-auto object-contain brightness-0 invert opacity-40">
+                            </div>
+                            <h3 class="font-heading text-2xl font-bold mb-4 text-white uppercase tracking-tight">Isker</h3>
+                            <div class="space-y-4 font-body text-brand-cream/70 text-sm leading-relaxed">
+                                <p>Измерение сопротивления изоляции кабелей и испытание фазы (189 позиций) — Самал, ст. Болашак, EWRP.</p>
+                                <p>Измерение сопротивления заземляющих устройств (45 позиций).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="project-card bg-white/5 p-8 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-colors duration-300 w-[350px] shrink-0 flex flex-col justify-between">
+                        <div>
+                            <div class="h-12 mb-6 flex items-start">
+                                <img src="./images/gavazzi.png" alt="Carlo Gavazzi Logo" class="h-full w-auto object-contain brightness-0 invert opacity-40">
+                            </div>
+                            <h3 class="font-heading text-2xl font-bold mb-4 text-white uppercase tracking-tight">Carlo Gavazzi</h3>
+                            <div class="space-y-4 font-body text-brand-cream/70 text-sm leading-relaxed">
+                                <p>Административно-производственная база с вахтовым поселком в районе Тенгиз на 1500 человек.</p>
+                                <p>Переоформление юридической и проектной документации базы.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5 -->
+                    <div class="project-card bg-white/5 p-8 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-colors duration-300 w-[350px] shrink-0 flex flex-col justify-between">
+                        <div>
+                            <div class="h-12 mb-6 flex items-start">
+                                <img src="./images/rauan.png" alt="Rauan Nalco Logo" class="h-full w-auto object-contain brightness-0 invert opacity-40">
+                            </div>
+                            <h3 class="font-heading text-2xl font-bold mb-4 text-white uppercase tracking-tight">Rauan Nalco</h3>
+                            <div class="space-y-4 font-body text-brand-cream/70 text-sm leading-relaxed">
+                                <p>Корректировка РП производственной базы по выпуску химических реагентов для нефтяной промышленности.</p>
+                                <p>Полная разработка технологических схем объекта.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 6 -->
+                    <div class="project-card bg-white/5 p-8 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-colors duration-300 w-[350px] shrink-0 flex flex-col justify-between">
+                        <div>
+                            <div class="h-12 mb-6 text-brand-clay pt-2"></div>
+                            <h3 class="font-heading text-2xl font-bold mb-4 text-white uppercase tracking-tight">Svetland Oil</h3>
+                            <div class="space-y-4 font-body text-brand-cream/70 text-sm leading-relaxed">
+                                <p>Нефтепровод D=273x8 (800м) до ППН Забурунье АО ЭмбаМунайГаз.</p>
+                                <p>Рабочий проект «Бытовой комплекс на 15 человек» (Октябрьское).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 7 -->
+                    <div class="project-card bg-white/5 p-8 rounded-[2rem] border border-white/10 hover:border-brand-clay/50 transition-colors duration-300 w-[350px] shrink-0 flex flex-col justify-between">
+                        <div>
+                            <div class="h-12 mb-6 flex items-start">
+                                <img src="./images/ykk.png" alt="YKK Logo" class="h-full w-auto object-contain brightness-0 invert opacity-40">
+                            </div>
+                            <h3 class="font-heading text-2xl font-bold mb-4 text-white uppercase tracking-tight">YKK Kazakhstan</h3>
+                            <div class="space-y-4 font-body text-brand-cream/70 text-sm leading-relaxed">
+                                <p>Разработка рабочего проекта по учебному центру в г. Атырау.</p>
+                                <p>Полный цикл проектной документации для образовательного объекта.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History / Milestones -->
+    <section id="history" class="py-32 px-6 lg:px-24 bg-brand-cream">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="font-heading text-4xl lg:text-5xl font-bold text-center mb-24 text-brand-moss">История Компании</h2>
+            <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-brand-moss/20 before:to-transparent">
+                
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-brand-cream bg-brand-clay text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10"></div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-[2rem] border border-brand-moss/10 bg-white shadow-xl">
+                        <div class="mb-1 font-mono text-brand-clay text-sm">14.06.2011</div>
+                        <div class="font-body text-brand-charcoal">Официальное создание компании Dauylpaz Management.</div>
+                    </div>
+                </div>
+
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-brand-cream bg-brand-moss text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10"></div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-[2rem] border border-brand-moss/10 bg-white shadow-xl">
+                        <div class="mb-1 font-mono text-brand-clay text-sm">08.2011</div>
+                        <div class="font-body text-brand-charcoal">Получение лицензии 3 категории по проектированию, строительству и изыскательской деятельности.</div>
+                    </div>
+                </div>
+
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-brand-cream bg-brand-moss text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10"></div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-[2rem] border border-brand-moss/10 bg-white shadow-xl">
+                        <div class="mb-1 font-mono text-brand-clay text-sm">09.2011</div>
+                        <div class="font-body text-brand-charcoal">Утверждена лицензия с Министерства Энергетики РК.</div>
+                    </div>
+                </div>
+
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-brand-cream bg-brand-moss text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10"></div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-[2rem] border border-brand-moss/10 bg-white shadow-xl">
+                        <div class="mb-1 font-mono text-brand-clay text-sm">02.2017</div>
+                        <div class="font-body text-brand-charcoal">Высшая степень: Лицензия 2 категории на проектирование.</div>
+                    </div>
+                </div>
+
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-brand-cream bg-brand-clay shadow-[0_0_15px_rgba(204,88,51,0.5)] shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 animate-pulse"></div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-[2rem] border border-brand-clay/30 bg-white shadow-xl">
+                        <div class="mb-1 font-mono text-brand-clay text-sm font-bold">05.2017</div>
+                        <div class="font-body text-brand-charcoal">Грант от акимата Атырауской области на разработку значимого инвест-проекта.</div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="contact" class="bg-[#111] text-brand-cream pt-24 pb-12 px-6 lg:px-24 rounded-t-[4rem] relative overflow-hidden mt-12">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-moss/20 blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16 mb-20 border-b border-brand-cream/10 pb-20 relative z-10">
+            <div class="max-w-lg">
+                <div class="mb-8">
+                    <img src="./images/logo.png" alt="Dauylpaz Logo" class="h-16 w-auto object-contain brightness-0 invert opacity-80">
+                </div>
+                <div class="font-drama text-6xl md:text-8xl italic text-brand-clay mb-6">Контакты.</div>
+                <h2 class="font-heading text-3xl font-bold mb-8">Головной штаб</h2>
+                
+                <div class="space-y-6 font-mono text-sm">
+                    <div class="flex items-start gap-4">
+                        <div class="text-brand-clay mt-1">⌖</div>
+                        <div>
+                            <div class="text-brand-cream/60">Индекс: 060002</div>
+                            <div class="text-brand-cream text-lg mt-1">РК, г. Атырау, ул. М. Утемисова 100</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-brand-clay">☏</div>
+                        <div class="text-brand-cream text-xl">+7 (7122) 20-80-55</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col items-start gap-6 bg-white/5 p-10 rounded-[3rem] border border-white/10 w-full md:w-auto">
+                <div class="font-mono text-sm tracking-widest uppercase text-brand-clay">Связь</div>
+                <a href="mailto:info@dauylpaz.kz" class="font-heading text-2xl lg:text-4xl hover:text-brand-clay transition-colors">info@dauylpaz.kz</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto flex justify-between items-center text-brand-cream/30 font-mono text-xs relative z-10">
+            <div>© 2011–2026 Dauylpaz Management.</div>
+            <div>Engineering Precision.</div>
+        </div>
+    </footer>
+
+    <!-- Animations Setup -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Entrance
+        gsap.from(".hero-elem", {
+            y: 50, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2
+        });
+        
+        gsap.to("#hero-bg", {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "main",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // Projects Carousel Infinite Scroll
+        const track = document.getElementById("carousel-track");
+        const cardsClone = track.innerHTML;
+        track.innerHTML += cardsClone + cardsClone; // Triple the content for smooth loop
+
+        const animation = gsap.to("#carousel-track", {
+            xPercent: -33.333,
+            ease: "none",
+            duration: 50,
+            repeat: -1
+        });
+
+        // Draggable Functionality
+        gsap.registerPlugin(Draggable);
+        Draggable.create("#carousel-track", {
+            type: "x",
+            edgeResistance: 0.65,
+            inertia: true,
+            onPress: () => {
+                animation.pause();
+            },
+            onRelease: () => {
+                animation.play();
+            }
+        });
+
+        // Services Stagger
+        gsap.from(".service-card", {
+            scrollTrigger: {
+                trigger: "#services",
+                start: "top 70%",
+            },
+            y: 50, opacity: 0, duration: 1, stagger: 0.1, ease: "power2.out"
+        });
+    </script>
+</body>
+</html>
